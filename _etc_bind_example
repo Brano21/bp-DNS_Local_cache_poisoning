@@ -1,0 +1,5 @@
+# add this lines to /etc/bind/named.conf
+zone "example.net" {
+type master;
+file "/etc/bind/example.net.zone";
+};
